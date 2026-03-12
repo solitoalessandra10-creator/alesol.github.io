@@ -30,11 +30,26 @@ body {
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 600;
+  display: flex;
+  flex-direction: column; /* immagine sopra il testo */
+  align-items: center;    /* centra orizzontalmente */
   margin-bottom: 40px;
 }
 
+.logo img.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;    /* diventa circolare */
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 2px solid #0d6efd; /* bordo opzionale */
+}
+
+.logo span {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
 .menu {
   display: flex;
   flex-direction: column;
