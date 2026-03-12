@@ -264,6 +264,16 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
+.hw-row{
+  padding:10px 0;
+  border-bottom:1px solid #e5e5e5;
+  font-size:15px;
+}
+
+.hw-row:last-child{
+  border-bottom:none;
+}
+
 /* Dark mode opzionale */
 @media (prefers-color-scheme: dark) {
   body { background: #121212; color: #e9ecef; }
