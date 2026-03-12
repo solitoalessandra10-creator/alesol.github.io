@@ -53,7 +53,7 @@ function createCard(title, task, description, date, fileName, fileData, index) {
       <strong>Created:</strong>
       <div class="row-text">${date}</div>
     </div>
-    <div class="hw-row">
+    <div class="description-row">
       <strong>Descrizione:</strong>
       <div class="description-text">${description}</div>
     </div>
@@ -64,7 +64,6 @@ function createCard(title, task, description, date, fileName, fileData, index) {
   `;
 
   header.onclick = () => content.classList.toggle("open");
-
   card.appendChild(content);
   container.appendChild(card);
 }
