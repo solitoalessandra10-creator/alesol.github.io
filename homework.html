@@ -10,27 +10,27 @@
 
 <div class="layout">
 
-<aside class="sidebar">
-  <!-- Logo / profilo -->
-  <div class="logo">
-    <div class="profile-circle">
-      <img src="images/profile.jpg" alt="Alessandra Solito">
+  <aside class="sidebar">
+    <!-- Logo / profilo -->
+    <div class="logo">
+      <div class="profile-circle">
+        <img src="images/profile.jpg" alt="Alessandra Solito">
+      </div>
+      <span>MySite</span>
     </div>
-    <span>MySite</span>
-  </div>
-
-  <!-- Menu -->
-  <nav class="menu">
-    <a href="index.html" >Homepage</a>
-    <a href="whoiam.html">Who I am</a>
-    <a href="homework.html" class="active">Homework</a>
-  </nav>
-
-  <!-- Footer -->
-  <div class="sidebar-footer">
-    <p>© 2026 MySite</p>
-  </div>
-</aside>
+  
+    <!-- Menu -->
+    <nav class="menu">
+      <a href="index.html" >Homepage</a>
+      <a href="whoiam.html">Who I am</a>
+      <a href="homework.html" class="active">Homework</a>
+    </nav>
+  
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <p>© 2026 MySite</p>
+    </div>
+  </aside>
 
   <!-- Main content -->
   <main class="content">
@@ -38,9 +38,74 @@
       <h1>Homework</h1>
       <p>My name is Alessandra Solito and this is my personal blog dedicated to the collection and submission of homework assignments for the Applied Statistics course.</p>
     </article>
-  </main>
 
+  <!-- Tasto Add Homework -->
+  <button id="openModal" class="add-btn">+ Add New Homework</button>
+  
+  <!-- Modal per nuovo homework -->
+  <div id="homeworkModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>New Homework</h2>
+      <form id="homeworkForm">
+        <label for="weekTitle">Titolo Settimana:</label>
+        <input type="text" id="weekTitle" name="weekTitle" required>
+  
+        <label for="description">Descrizione:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+  
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" id="cancelBtn">Annulla</button>
+          <button type="submit">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Container delle cards -->
+  <div id="homeworkContainer" class="homework-container"></div>
+  </main>
+  
 </div>
 
+<script>
+const modal = document.getElementById("homeworkModal");
+const openBtn = document.getElementById("openModal");
+const closeBtn = document.querySelector(".close");
+const cancelBtn = document.getElementById("cancelBtn");
+const form = document.getElementById("homeworkForm");
+const container = document.getElementById("homeworkContainer");
+
+// Apri modal
+openBtn.onclick = () => { modal.style.display = "flex"; }
+
+// Chiudi modal
+closeBtn.onclick = cancelBtn.onclick = () => { modal.style.display = "none"; }
+
+// Chiudi cliccando fuori
+window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
+
+// Submit form
+form.onsubmit = (e) => {
+  e.preventDefault();
+  const title = form.weekTitle.value;
+  const description = form.description.value;
+
+  // Crea card
+  const card = document.createElement("div");
+  card.className = "homework-card";
+  card.textContent = title;
+
+  // Click sulla card apre popup con descrizione
+  card.onclick = () => {
+    alert(`Titolo: ${title}\nDescrizione: ${description}`);
+  }
+
+  container.appendChild(card);
+  form.reset();
+  modal.style.display = "none";
+};
+</script>
+  
 </body>
 </html>
