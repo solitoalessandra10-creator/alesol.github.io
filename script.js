@@ -1,4 +1,4 @@
-// script.js aggiornato per più file e visualizzazione corretta
+// script.js - homework multipli file
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -43,7 +43,6 @@ function createCard(title, task, description, date, filesArray, index) {
   const content = document.createElement("div");
   content.className = "card-content";
 
-  // Genera link per tutti i file
   let fileHTML = "No file";
   if (filesArray && filesArray.length > 0) {
     fileHTML = filesArray.map(f => `<a href="${f.data}" download="${f.name}">${f.name}</a>`).join("<br>");
@@ -61,11 +60,12 @@ function createCard(title, task, description, date, filesArray, index) {
   container.appendChild(card);
 }
 
-// Salvataggio homework nel localStorage
+// Salvataggio nel localStorage
 function saveHomework(hw) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
+  return list.length - 1; // restituisce l'indice corretto
 }
 
 function removeHomework(index) {
@@ -74,7 +74,7 @@ function removeHomework(index) {
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Carica homework salvati
+// Ricarica homework salvati
 function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item,index) => {
@@ -82,7 +82,7 @@ function loadHomework() {
   });
 }
 
-// Aggiorna indici
+// Aggiorna indici dopo cancellazione
 function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
   cards.forEach((card,i) => {
@@ -99,6 +99,7 @@ function refreshIndexes() {
 // Submit form
 form.onsubmit = (e) => {
   e.preventDefault();
+
   const title = document.getElementById("weekTitle").value;
   const task = document.getElementById("task").value;
   const description = document.getElementById("description").value;
@@ -110,6 +111,7 @@ form.onsubmit = (e) => {
   if (files.length > 0) {
     let loadedFiles = 0;
 
+    // Leggi tutti i file prima di creare la card
     for (let i=0; i<files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
@@ -118,20 +120,19 @@ form.onsubmit = (e) => {
         filesArray.push({name: file.name, data: event.target.result});
         loadedFiles++;
 
+        // Quando tutti i file sono letti, salva e crea card
         if (loadedFiles === files.length) {
-          // Tutti i file caricati, crea card e salva
-          createCard(title, task, description, date, filesArray,
-            JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-          saveHomework({title, task, description, date, filesArray});
+          const index = saveHomework({title, task, description, date, filesArray});
+          createCard(title, task, description, date, filesArray, index);
         }
       };
       reader.readAsDataURL(file);
     }
+
   } else {
     // Nessun file selezionato
-    createCard(title, task, description, date, [], 
-      JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-    saveHomework({title, task, description, date, filesArray: []});
+    const index = saveHomework({title, task, description, date, filesArray: []});
+    createCard(title, task, description, date, [], index);
   }
 
   form.reset();
