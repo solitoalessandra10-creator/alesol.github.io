@@ -1,3 +1,5 @@
+// JS Homework completo
+
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.querySelector(".close");
@@ -8,10 +10,10 @@ const container = document.getElementById("homeworkContainer");
 // Open/close modal
 openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
-window.onclick = (e) => { if(e.target === modal) modal.classList.remove("show"); };
+window.onclick = (e) => { if(e.target == modal) modal.classList.remove("show"); };
 
-// Create card
-function createCard(title, task, description, date, fileName, fileData, index) {
+// Create homework card
+function createCard(title, task, description, date, fileName, fileData, index){
   const card = document.createElement("div");
   card.className = "homework-card";
 
@@ -41,58 +43,44 @@ function createCard(title, task, description, date, fileName, fileData, index) {
   const content = document.createElement("div");
   content.className = "card-content";
 
-  let fileHTML = "No file";
-  if(fileData) fileHTML = `<a href="${fileData}" download="${fileName}">${fileName}</a>`;
-
   content.innerHTML = `
-    <div class="hw-row">
-      <strong>Task:</strong>
-      <div class="row-text">${task}</div>
-    </div>
-    <div class="hw-row">
-      <strong>Created:</strong>
-      <div class="row-text">${date}</div>
-    </div>
-    <div class="description-row">
-      <strong>Descrizione:</strong>
-      <div class="description-text">${description}</div>
-    </div>
-    <div class="hw-row">
-      <strong>File:</strong>
-      <div class="row-text">${fileHTML}</div>
-    </div>
+    <div class="hw-row"><strong>Task:</strong> <span class="row-text">${task}</span></div>
+    <div class="hw-row"><strong>Created:</strong> <span class="row-text">${date}</span></div>
+    <div class="description-row"><strong>Description:</strong> <span class="description-text">${description}</span></div>
+    <div class="hw-row"><strong>File:</strong> <span class="row-text">${fileData ? `<a href="${fileData}" download="${fileName}">${fileName}</a>` : "No file"}</span></div>
   `;
 
   header.onclick = () => content.classList.toggle("open");
+
   card.appendChild(content);
   container.appendChild(card);
 }
 
 // LocalStorage
-function saveHomework(hw) {
-  const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
+function saveHomework(hw){
+  let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function removeHomework(index) {
-  const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
+function removeHomework(index){
+  let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.splice(index,1);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function loadHomework() {
+function loadHomework(){
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item,index) => {
     createCard(item.title,item.task,item.description,item.date,item.fileName,item.fileData,index);
   });
 }
 
-function refreshIndexes() {
+function refreshIndexes(){
   const cards = container.querySelectorAll(".homework-card");
   cards.forEach((card,i) => {
     const deleteBtn = card.querySelector(".delete-btn");
-    deleteBtn.onclick = (e) => {
+    deleteBtn.onclick = (e)=>{
       e.stopPropagation();
       removeHomework(i);
       card.remove();
