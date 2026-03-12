@@ -12,10 +12,12 @@
 <div class="layout">
 
 <aside class="sidebar">
+
 <div class="logo">
 <div class="profile-circle">
 <img src="images/profile.jpg">
 </div>
+
 <span class="email">
 <a href="mailto:solito.2249863@studenti.uniroma1.it">
 solito.2249863@studenti.uniroma1.it
@@ -32,7 +34,9 @@ solito.2249863@studenti.uniroma1.it
 <div class="sidebar-footer">
 <p>© 2026 MySite</p>
 </div>
+
 </aside>
+
 
 <main class="content">
 
@@ -51,6 +55,7 @@ collection and submission of homework assignments for the Applied Statistics cou
 </main>
 </div>
 
+
 <!-- MODAL -->
 <div id="homeworkModal" class="modal">
 
@@ -62,26 +67,28 @@ collection and submission of homework assignments for the Applied Statistics cou
 
 <form id="homeworkForm">
 
-<label>Titolo Settimana</label>
+<label>Title</label>
 <input type="text" id="weekTitle" required>
 
 <label>Task</label>
 <input type="text" id="task" required>
 
-<label>Descrizione</label>
+<label>Description</label>
 <textarea id="description" rows="4" required></textarea>
 
-<label>File (.pdf o .java)</label>
+<label>File (.pdf or .java)</label>
 <input type="file" id="fileInput" accept=".pdf,.java">
 
-<div style="margin-top:20px;display:flex;justify-content:flex-end;gap:10px;">
-<button type="button" id="cancelBtn">Annulla</button>
-<button type="submit">Salva</button>
+<div class="modal-buttons">
+<button type="button" id="cancelBtn">Cancel</button>
+<button type="submit">Save</button>
 </div>
 
 </form>
+
 </div>
 </div>
+
 
 <script>
 
@@ -92,6 +99,7 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
+
 openBtn.onclick = () => modal.style.display="flex";
 closeBtn.onclick = cancelBtn.onclick = () => modal.style.display="none";
 
@@ -99,25 +107,24 @@ window.onclick = (e)=>{
 if(e.target==modal) modal.style.display="none";
 };
 
+
 function createCard(title,task,description,date,fileName,fileData,index){
 
 const card=document.createElement("div");
 card.className="homework-card";
 
+
 const header=document.createElement("div");
-header.style.display="flex";
-header.style.justifyContent="space-between";
-header.style.alignItems="center";
+header.className="card-header";
 
 const titleSpan=document.createElement("span");
 titleSpan.textContent=title;
-titleSpan.style.fontWeight="bold";
+titleSpan.className="card-title";
+
 
 const deleteBtn=document.createElement("button");
 deleteBtn.textContent="❌";
-deleteBtn.style.border="none";
-deleteBtn.style.background="transparent";
-deleteBtn.style.cursor="pointer";
+deleteBtn.className="delete-btn";
 
 deleteBtn.onclick=(e)=>{
 e.stopPropagation();
@@ -128,38 +135,42 @@ refreshIndexes();
 
 header.appendChild(titleSpan);
 header.appendChild(deleteBtn);
-
 card.appendChild(header);
 
-const content=document.createElement("div");
-content.style.display="none";
-content.style.marginTop="10px";
 
-let fileHTML="";
+const content=document.createElement("div");
+content.className="card-content";
+
+let fileHTML="No file";
 
 if(fileData){
-fileHTML=`<p><a href="${fileData}" download="${fileName}">Download ${fileName}</a></p>`;
+fileHTML=`<a href="${fileData}" download="${fileName}">${fileName}</a>`;
 }
 
 content.innerHTML=`
 
 <div class="hw-row">
-<strong>Task:</strong> ${task}
+<span class="label">Task</span>
+<span>${task}</span>
 </div>
 
 <div class="hw-row">
-<strong>Descrizione:</strong> ${description}
+<span class="label">Description</span>
+<span>${description}</span>
 </div>
 
 <div class="hw-row">
-<strong>Creato:</strong> ${date}
+<span class="label">Created</span>
+<span>${date}</span>
 </div>
 
 <div class="hw-row">
-${fileHTML}
+<span class="label">File</span>
+<span>${fileHTML}</span>
 </div>
 
 `;
+
 header.onclick=()=>{
 content.style.display=
 content.style.display==="none"?"block":"none";
@@ -170,6 +181,7 @@ container.appendChild(card);
 
 }
 
+
 function saveHomework(hw){
 
 let list=JSON.parse(localStorage.getItem("homeworkList"))||[];
@@ -178,6 +190,7 @@ localStorage.setItem("homeworkList",JSON.stringify(list));
 
 }
 
+
 function removeHomework(index){
 
 let list=JSON.parse(localStorage.getItem("homeworkList"))||[];
@@ -185,6 +198,7 @@ list.splice(index,1);
 localStorage.setItem("homeworkList",JSON.stringify(list));
 
 }
+
 
 function loadHomework(){
 
@@ -206,13 +220,14 @@ index
 
 }
 
+
 function refreshIndexes(){
 
 const cards=container.querySelectorAll(".homework-card");
 
 cards.forEach((card,i)=>{
 
-const deleteBtn=card.querySelector("button");
+const deleteBtn=card.querySelector(".delete-btn");
 
 deleteBtn.onclick=(e)=>{
 e.stopPropagation();
@@ -224,6 +239,7 @@ refreshIndexes();
 });
 
 }
+
 
 form.onsubmit=(e)=>{
 
@@ -283,6 +299,7 @@ form.reset();
 modal.style.display="none";
 
 };
+
 
 loadHomework();
 
