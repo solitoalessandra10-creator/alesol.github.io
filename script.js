@@ -5,12 +5,12 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
-// Open/close modal with smooth transition
+// Apri/chiudi modal con animazione
 openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
 window.onclick = (e) => { if (e.target === modal) modal.classList.remove("show"); };
 
-// Create a homework card
+// Crea card
 function createCard(title, task, description, date, fileName, fileData, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
@@ -45,34 +45,36 @@ function createCard(title, task, description, date, fileName, fileData, index) {
   if (fileData) fileHTML = `<a href="${fileData}" download="${fileName}">${fileName}</a>`;
 
   content.innerHTML = `
-    <div class="hw-row"><span class="label">Task</span><span>${task}</span></div>
-    <div class="hw-row"><span class="label">Description</span><span>${description}</span></div>
-    <div class="hw-row"><span class="label">Created</span><span>${date}</span></div>
-    <div class="hw-row"><span class="label">File</span><span>${fileHTML}</span></div>
+    <div class="hw-row"><strong>Task:</strong> ${task}</div>
+    <div class="hw-row"><strong>Created:</strong> ${date}</div>
+    <div class="hw-row"><strong>Descrizione:</strong>
+      <div class="description-text">${description}</div>
+    </div>
+    <div class="hw-row"><strong>File:</strong> ${fileHTML}</div>
   `;
 
-  // Toggle content open/close with smooth max-height animation
+  // Toggle card
   header.onclick = () => content.classList.toggle("open");
 
   card.appendChild(content);
   container.appendChild(card);
 }
 
-// Save homework to localStorage
+// Salva su localStorage
 function saveHomework(hw) {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Remove homework from localStorage
+// Rimuovi da localStorage
 function removeHomework(index) {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.splice(index, 1);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Load all homework from localStorage
+// Carica homework esistenti
 function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item, index) => {
@@ -80,7 +82,7 @@ function loadHomework() {
   });
 }
 
-// Refresh delete buttons indices
+// Aggiorna indici delete button
 function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
   cards.forEach((card, i) => {
@@ -94,7 +96,7 @@ function refreshIndexes() {
   });
 }
 
-// Handle form submit
+// Submit form
 form.onsubmit = (e) => {
   e.preventDefault();
   const title = document.getElementById("weekTitle").value;
@@ -123,5 +125,5 @@ form.onsubmit = (e) => {
   modal.classList.remove("show");
 };
 
-// Load homework on page load
+// Carica homework all’avvio
 loadHomework();
