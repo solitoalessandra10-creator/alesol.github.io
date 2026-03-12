@@ -1,4 +1,4 @@
-// script.js - Gestione Homework
+// script.js aggiornato per più file visibili
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -43,7 +43,7 @@ function createCard(title, task, description, date, filesArray, index) {
   const content = document.createElement("div");
   content.className = "card-content";
 
-  // Prepariamo la lista dei file
+  // Genera lista di link file
   let fileHTML = "No file";
   if (filesArray && filesArray.length > 0) {
     fileHTML = filesArray.map(f => `<a href="${f.data}" download="${f.name}">${f.name}</a>`).join("<br>");
@@ -106,8 +106,9 @@ form.onsubmit = (e) => {
   const files = document.getElementById("fileInput").files;
   const date = new Date().toLocaleDateString();
 
+  const filesArray = [];
+
   if (files.length > 0) {
-    const filesArray = [];
     let loadedFiles = 0;
 
     for (let i=0; i<files.length; i++) {
@@ -117,16 +118,17 @@ form.onsubmit = (e) => {
       reader.onload = function(event){
         filesArray.push({name: file.name, data: event.target.result});
         loadedFiles++;
+
+        // Solo quando tutti i file sono letti
         if (loadedFiles === files.length) {
-          // Tutti i file caricati, crea card e salva
           createCard(title, task, description, date, filesArray,
             JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
           saveHomework({title, task, description, date, filesArray});
         }
       };
+
       reader.readAsDataURL(file);
     }
-
   } else {
     // Nessun file selezionato
     createCard(title, task, description, date, [], 
