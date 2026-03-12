@@ -150,7 +150,7 @@ body {
   border: 1px solid #ccc;
 }
 
-/* Card homework */
+/* Homework cards */
 .homework-container {
   display: flex;
   flex-direction: column;
@@ -170,6 +170,7 @@ body {
   transform: translateY(-2px);
 }
 
+/* Header della card */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -181,7 +182,7 @@ body {
 
 .card-title {
   flex: 1;
-  text-align: left;
+  text-align: left; /* titolo sempre a sinistra */
 }
 
 .delete-btn {
@@ -191,11 +192,13 @@ body {
   font-size: 16px;
 }
 
+/* Contenuto card */
 .card-content {
   max-height: 0;
   overflow: hidden;
   padding: 0 18px;
   transition: max-height 0.3s ease, padding 0.3s ease;
+  text-align: left; /* testo a sinistra */
 }
 
 .card-content.open {
@@ -203,18 +206,25 @@ body {
   padding: 10px 18px;
 }
 
+/* Riga singola della card */
 .hw-row {
+  display: flex;
+  flex-direction: column; /* label sopra contenuto */
   margin-bottom: 10px;
   font-size: 14px;
   text-align: left;
 }
 
+.hw-row strong {
+  display: block;
+  margin-bottom: 3px; /* distanza tra label e contenuto */
+}
+
 .description-text {
-  margin-top: 5px;
-  padding-left: 10px;
+  padding-left: 0;
   font-weight: 400;
   color: #495057;
-  white-space: pre-wrap;
+  white-space: pre-wrap; /* mantiene a capo */
 }
 
 /* Dark mode */
