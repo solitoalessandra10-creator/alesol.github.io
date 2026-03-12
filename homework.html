@@ -11,299 +11,74 @@
 
 <div class="layout">
 
-<aside class="sidebar">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="profile-circle">
+        <img src="images/profile.jpg" alt="Profile Picture">
+      </div>
+      <span class="email">
+        <a href="mailto:solito.2249863@studenti.uniroma1.it">
+          solito.2249863@studenti.uniroma1.it
+        </a>
+      </span>
+    </div>
 
-<div class="logo">
-<div class="profile-circle">
-<img src="images/profile.jpg">
+    <nav class="menu">
+      <a href="index.html">Homepage</a>
+      <a href="whoiam.html">Who I am</a>
+      <a href="homework.html" class="active">Homework</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <p>© 2026 MySite</p>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <article class="post">
+      <h1>Homework</h1>
+      <p>
+        My name is Alessandra Solito and this is my personal blog dedicated to the
+        collection and submission of homework assignments for the Applied Statistics course.
+      </p>
+    </article>
+
+    <button id="openModal" class="add-btn">+ Add New Homework</button>
+
+    <div id="homeworkContainer" class="homework-container"></div>
+  </main>
+
 </div>
-
-<span class="email">
-<a href="mailto:solito.2249863@studenti.uniroma1.it">
-solito.2249863@studenti.uniroma1.it
-</a>
-</span>
-</div>
-
-<nav class="menu">
-<a href="index.html">Homepage</a>
-<a href="whoiam.html">Who I am</a>
-<a href="homework.html" class="active">Homework</a>
-</nav>
-
-<div class="sidebar-footer">
-<p>© 2026 MySite</p>
-</div>
-
-</aside>
-
-
-<main class="content">
-
-<article class="post">
-<h1>Homework</h1>
-<p>
-My name is Alessandra Solito and this is my personal blog dedicated to the
-collection and submission of homework assignments for the Applied Statistics course.
-</p>
-</article>
-
-<button id="openModal" class="add-btn">+ Add New Homework</button>
-
-<div id="homeworkContainer" class="homework-container"></div>
-
-</main>
-</div>
-
 
 <!-- MODAL -->
 <div id="homeworkModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>New Homework</h2>
+    <form id="homeworkForm">
+      <label>Title</label>
+      <input type="text" id="weekTitle" required>
 
-<div class="modal-content">
+      <label>Task</label>
+      <input type="text" id="task" required>
 
-<span class="close">&times;</span>
+      <label>Description</label>
+      <textarea id="description" rows="4" required></textarea>
 
-<h2>New Homework</h2>
+      <label>File (.pdf or .java)</label>
+      <input type="file" id="fileInput" accept=".pdf,.java">
 
-<form id="homeworkForm">
-
-<label>Title</label>
-<input type="text" id="weekTitle" required>
-
-<label>Task</label>
-<input type="text" id="task" required>
-
-<label>Description</label>
-<textarea id="description" rows="4" required></textarea>
-
-<label>File (.pdf or .java)</label>
-<input type="file" id="fileInput" accept=".pdf,.java">
-
-<div class="modal-buttons">
-<button type="button" id="cancelBtn">Cancel</button>
-<button type="submit">Save</button>
+      <div class="modal-buttons">
+        <button type="button" id="cancelBtn">Cancel</button>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-</form>
-
-</div>
-</div>
-
-
-<script>
-
-const modal = document.getElementById("homeworkModal");
-const openBtn = document.getElementById("openModal");
-const closeBtn = document.querySelector(".close");
-const cancelBtn = document.getElementById("cancelBtn");
-const form = document.getElementById("homeworkForm");
-const container = document.getElementById("homeworkContainer");
-
-
-openBtn.onclick = () => modal.style.display="flex";
-closeBtn.onclick = cancelBtn.onclick = () => modal.style.display="none";
-
-window.onclick = (e)=>{
-if(e.target==modal) modal.style.display="none";
-};
-
-
-function createCard(title,task,description,date,fileName,fileData,index){
-
-const card=document.createElement("div");
-card.className="homework-card";
-
-
-const header=document.createElement("div");
-header.className="card-header";
-
-const titleSpan=document.createElement("span");
-titleSpan.textContent=title;
-titleSpan.className="card-title";
-
-
-const deleteBtn=document.createElement("button");
-deleteBtn.textContent="❌";
-deleteBtn.className="delete-btn";
-
-deleteBtn.onclick=(e)=>{
-e.stopPropagation();
-removeHomework(index);
-card.remove();
-refreshIndexes();
-};
-
-header.appendChild(titleSpan);
-header.appendChild(deleteBtn);
-card.appendChild(header);
-
-
-const content=document.createElement("div");
-content.className="card-content";
-
-let fileHTML="No file";
-
-if(fileData){
-fileHTML=`<a href="${fileData}" download="${fileName}">${fileName}</a>`;
-}
-
-content.innerHTML=`
-
-<div class="hw-row">
-<span class="label">Task</span>
-<span>${task}</span>
-</div>
-
-<div class="hw-row">
-<span class="label">Description</span>
-<span>${description}</span>
-</div>
-
-<div class="hw-row">
-<span class="label">Created</span>
-<span>${date}</span>
-</div>
-
-<div class="hw-row">
-<span class="label">File</span>
-<span>${fileHTML}</span>
-</div>
-
-`;
-
-header.onclick=()=>{
-content.style.display=
-content.style.display==="none"?"block":"none";
-};
-
-card.appendChild(content);
-container.appendChild(card);
-
-}
-
-
-function saveHomework(hw){
-
-let list=JSON.parse(localStorage.getItem("homeworkList"))||[];
-list.push(hw);
-localStorage.setItem("homeworkList",JSON.stringify(list));
-
-}
-
-
-function removeHomework(index){
-
-let list=JSON.parse(localStorage.getItem("homeworkList"))||[];
-list.splice(index,1);
-localStorage.setItem("homeworkList",JSON.stringify(list));
-
-}
-
-
-function loadHomework(){
-
-const list=JSON.parse(localStorage.getItem("homeworkList"))||[];
-
-list.forEach((item,index)=>{
-
-createCard(
-item.title,
-item.task,
-item.description,
-item.date,
-item.fileName,
-item.fileData,
-index
-);
-
-});
-
-}
-
-
-function refreshIndexes(){
-
-const cards=container.querySelectorAll(".homework-card");
-
-cards.forEach((card,i)=>{
-
-const deleteBtn=card.querySelector(".delete-btn");
-
-deleteBtn.onclick=(e)=>{
-e.stopPropagation();
-removeHomework(i);
-card.remove();
-refreshIndexes();
-};
-
-});
-
-}
-
-
-form.onsubmit=(e)=>{
-
-e.preventDefault();
-
-const title=document.getElementById("weekTitle").value;
-const task=document.getElementById("task").value;
-const description=document.getElementById("description").value;
-
-const file=document.getElementById("fileInput").files[0];
-
-const date=new Date().toLocaleDateString();
-
-if(file){
-
-const reader=new FileReader();
-
-reader.onload=function(){
-
-const hw={
-title,
-task,
-description,
-date,
-fileName:file.name,
-fileData:reader.result
-};
-
-createCard(title,task,description,date,file.name,reader.result,
-JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-
-saveHomework(hw);
-
-};
-
-reader.readAsDataURL(file);
-
-}else{
-
-const hw={
-title,
-task,
-description,
-date,
-fileName:null,
-fileData:null
-};
-
-createCard(title,task,description,date,null,null,
-JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-
-saveHomework(hw);
-
-}
-
-form.reset();
-modal.style.display="none";
-
-};
-
-
-loadHomework();
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
