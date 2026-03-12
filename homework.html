@@ -11,72 +11,83 @@
 
 <div class="layout">
 
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="profile-circle">
-        <img src="images/profile.jpg">
-      </div>
-      <span class="email">
-        <a href="mailto:solito.2249863@studenti.uniroma1.it">
-          solito.2249863@studenti.uniroma1.it
-        </a>
-      </span>
-    </div>
+<aside class="sidebar">
 
-    <nav class="menu">
-      <a href="index.html">Homepage</a>
-      <a href="whoiam.html">Who I am</a>
-      <a href="homework.html" class="active">Homework</a>
-    </nav>
+<div class="logo">
+<div class="profile-circle">
+<img src="images/profile.jpg">
+</div>
 
-    <div class="sidebar-footer">
-      <p>© 2026 MySite</p>
-    </div>
-  </aside>
+<span class="email">
+<a href="mailto:solito.2249863@studenti.uniroma1.it">
+solito.2249863@studenti.uniroma1.it
+</a>
+</span>
+</div>
 
-  <main class="content">
+<nav class="menu">
+<a href="index.html">Homepage</a>
+<a href="whoiam.html">Who I am</a>
+<a href="homework.html" class="active">Homework</a>
+</nav>
 
-    <article class="post">
-      <h1>Homework</h1>
-      <p>
-        My name is Alessandra Solito and this is my personal blog dedicated to the
-        collection and submission of homework assignments for the Applied Statistics course.
-      </p>
-    </article>
+<div class="sidebar-footer">
+<p>© 2026 MySite</p>
+</div>
 
-    <button id="openModal" class="add-btn">+ Add New Homework</button>
+</aside>
 
-    <div id="homeworkContainer" class="homework-container"></div>
+<main class="content">
 
-  </main>
+<article class="post">
+<h1>Homework</h1>
+<p>
+My name is Alessandra Solito and this is my personal blog dedicated to the
+collection and submission of homework assignments for the Applied Statistics course.
+</p>
+</article>
+
+<button id="openModal" class="add-btn">+ Add New Homework</button>
+
+<div id="homeworkContainer" class="homework-container"></div>
+
+</main>
 </div>
 
 <!-- MODAL -->
 <div id="homeworkModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>New Homework</h2>
-    <form id="homeworkForm">
-      <label>Title</label>
-      <input type="text" id="weekTitle" required>
 
-      <label>Task</label>
-      <input type="text" id="task" required>
+<div class="modal-content">
 
-      <label>Description</label>
-      <textarea id="description" rows="4" required></textarea>
+<span class="close">&times;</span>
 
-      <label>File (.pdf or .java)</label>
-      <input type="file" id="fileInput" accept=".pdf,.java">
+<h2>New Homework</h2>
 
-      <div class="modal-buttons">
-        <button type="button" id="cancelBtn">Cancel</button>
-        <button type="submit">Save</button>
-      </div>
-    </form>
-  </div>
+<form id="homeworkForm">
+
+<label>Title</label>
+<input type="text" id="weekTitle" required>
+
+<label>Task</label>
+<input type="text" id="task" required>
+
+<label>Description</label>
+<textarea id="description" rows="4" required></textarea>
+
+<label>File (.pdf or .java)</label>
+<input type="file" id="fileInput" accept=".pdf,.java">
+
+<div class="modal-buttons">
+<button type="button" id="cancelBtn">Cancel</button>
+<button type="submit">Save</button>
+</div>
+
+</form>
+
+</div>
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
