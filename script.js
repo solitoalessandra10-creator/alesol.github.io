@@ -1,4 +1,4 @@
-// script.js - gestione homework multipli file
+// script.js aggiornato per più file e visualizzazione corretta
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -43,9 +43,9 @@ function createCard(title, task, description, date, filesArray, index) {
   const content = document.createElement("div");
   content.className = "card-content";
 
+  // Genera link per tutti i file
   let fileHTML = "No file";
   if (filesArray && filesArray.length > 0) {
-    // Genera tutti i link dei file separati da <br>
     fileHTML = filesArray.map(f => `<a href="${f.data}" download="${f.name}">${f.name}</a>`).join("<br>");
   }
 
@@ -53,16 +53,15 @@ function createCard(title, task, description, date, filesArray, index) {
     <div class="hw-row"><strong>Task:</strong> <span class="row-text">${task}</span></div>
     <div class="hw-row"><strong>Created:</strong> <span class="row-text">${date}</span></div>
     <div class="description-row"><strong>Description:</strong> <span class="description-text">${description}</span></div>
-    <div class="hw-row"><strong>File:</strong> <span class="row-text">${fileHTML}</span></div>
+    <div class="hw-row"><strong>Files:</strong><br> <span class="row-text">${fileHTML}</span></div>
   `;
 
   header.onclick = () => content.classList.toggle("open");
-
   card.appendChild(content);
   container.appendChild(card);
 }
 
-// LocalStorage
+// Salvataggio homework nel localStorage
 function saveHomework(hw) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
@@ -75,7 +74,7 @@ function removeHomework(index) {
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Ricarica card
+// Carica homework salvati
 function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item,index) => {
@@ -100,7 +99,6 @@ function refreshIndexes() {
 // Submit form
 form.onsubmit = (e) => {
   e.preventDefault();
-
   const title = document.getElementById("weekTitle").value;
   const task = document.getElementById("task").value;
   const description = document.getElementById("description").value;
@@ -112,7 +110,6 @@ form.onsubmit = (e) => {
   if (files.length > 0) {
     let loadedFiles = 0;
 
-    // Leggi tutti i file prima di creare la card
     for (let i=0; i<files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
@@ -121,17 +118,15 @@ form.onsubmit = (e) => {
         filesArray.push({name: file.name, data: event.target.result});
         loadedFiles++;
 
-        // Quando tutti i file sono letti, crea card e salva
         if (loadedFiles === files.length) {
+          // Tutti i file caricati, crea card e salva
           createCard(title, task, description, date, filesArray,
             JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
           saveHomework({title, task, description, date, filesArray});
         }
       };
-
       reader.readAsDataURL(file);
     }
-
   } else {
     // Nessun file selezionato
     createCard(title, task, description, date, [], 
@@ -143,5 +138,5 @@ form.onsubmit = (e) => {
   modal.classList.remove("show");
 };
 
-// Carica homework salvati all'avvio
+// Carica al refresh
 loadHomework();
