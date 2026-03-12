@@ -84,7 +84,7 @@ body {
 
 .logo .email a {
   font-size: clamp(10px, 3vw, 14px);
-  color: #495057;
+  color: #0d6efd;
   text-decoration: none;
   display: block;
   word-wrap: break-word;
