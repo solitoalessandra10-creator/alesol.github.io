@@ -20,18 +20,11 @@ body {
 /* Sidebar */
 .sidebar {
   width: 260px;
-  background-color: #ffffff;
+  background-color: #fff;
   border-right: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
   padding: 40px 25px;
-}
-
-.sidebar .logo,
-.sidebar .menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .sidebar-footer {
@@ -41,13 +34,6 @@ body {
 }
 
 /* Logo */
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 50px;
-}
-
 .profile-circle {
   width: 140px;
   height: 140px;
@@ -58,14 +44,7 @@ body {
   justify-content: center;
   align-items: center;
   background: linear-gradient(145deg, #e0e0e0, #f8f8f8);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   margin-bottom: 15px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.profile-circle:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .profile-circle img {
@@ -74,29 +53,7 @@ body {
   object-fit: cover;
 }
 
-.logo span {
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.logo .email a {
-  font-size: clamp(10px, 3vw, 14px);
-  color: #0d6efd;
-  text-decoration: none;
-  display: block;
-  word-wrap: break-word;
-}
-
-.logo .email a:hover {
-  text-decoration: underline;
-}
-
 /* Menu */
-.menu {
-  width: 100%;
-}
-
 .menu a {
   display: block;
   width: 100%;
@@ -108,12 +65,6 @@ body {
   border-bottom: 1px solid #e5e5e5;
   text-align: center;
   transition: background 0.3s, color 0.3s;
-}
-
-.menu a:hover {
-  background-color: #e9f0ff;
-  color: #0d6efd;
-  border-left: 4px solid #0d6efd;
 }
 
 .menu a.active {
@@ -136,17 +87,6 @@ body {
   padding: 30px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   margin-bottom: 40px;
-}
-
-.post h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
-}
-
-.post p {
-  font-size: 18px;
-  line-height: 1.6;
-  color: #495057;
 }
 
 /* Button */
@@ -201,12 +141,6 @@ body {
   text-align: center;
 }
 
-.modal-content label {
-  display: block;
-  margin-top: 10px;
-  font-weight: 500;
-}
-
 .modal-content input,
 .modal-content textarea {
   width: 100%;
@@ -216,32 +150,13 @@ body {
   border: 1px solid #ccc;
 }
 
-.modal-content button {
-  margin-top: 15px;
-  padding: 8px 14px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#cancelBtn {
-  background: #adb5bd;
-  color: white;
-}
-
-.modal-content button[type="submit"] {
-  background: #0d6efd;
-  color: white;
-}
-
-/* Homework container */
+/* Card homework */
 .homework-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Card */
 .homework-card {
   background: #fff;
   border: 1px solid #e5e5e5;
@@ -255,7 +170,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* Header card */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -266,9 +180,8 @@ body {
 }
 
 .card-title {
-  font-weight: bold;
-  text-align: left;
   flex: 1;
+  text-align: left;
 }
 
 .delete-btn {
@@ -278,7 +191,6 @@ body {
   font-size: 16px;
 }
 
-/* Contenuto card */
 .card-content {
   max-height: 0;
   overflow: hidden;
@@ -292,49 +204,24 @@ body {
 }
 
 .hw-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
   font-size: 14px;
   text-align: left;
 }
 
-.hw-row:last-child {
-  border-bottom: none;
-}
-
-.label {
-  font-weight: 600;
-  color: #555;
+.description-text {
+  margin-top: 5px;
+  padding-left: 10px;
+  font-weight: 400;
+  color: #495057;
+  white-space: pre-wrap;
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  body {
-    background: #121212;
-    color: #e9ecef;
-  }
-  .sidebar {
-    background: #1e1e1e;
-    border-right: 1px solid #333;
-  }
-  .menu a {
-    color: #e9ecef;
-    border-bottom: 1px solid #333;
-  }
-  .menu a:hover {
-    background-color: #0d6efd33;
-    color: #fff;
-  }
-  .post,
-  .homework-card,
-  .modal-content {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    color: #e9ecef;
-  }
-  .hw-row {
-    border-bottom: 1px solid #333;
-  }
+  body { background: #121212; color: #e9ecef; }
+  .sidebar, .post, .homework-card, .modal-content { background: #1e1e1e; border: 1px solid #333; color: #e9ecef; }
+  .hw-row { border-bottom: 1px solid #333; }
+  .menu a { color: #e9ecef; border-bottom: 1px solid #333; }
+  .menu a:hover { background-color: #0d6efd33; color: #fff; }
 }
