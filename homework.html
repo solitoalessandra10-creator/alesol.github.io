@@ -47,7 +47,7 @@
   </main>
 </div>
 
-<!-- Modal per nuovo homework (fuori dal main) -->
+<!-- Modal per nuovo homework -->
 <div id="homeworkModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -55,6 +55,9 @@
     <form id="homeworkForm">
       <label for="weekTitle">Titolo Settimana:</label>
       <input type="text" id="weekTitle" name="weekTitle" required>
+
+      <label for="task">Task:</label>
+      <input type="text" id="task" name="task" required>
 
       <label for="description">Descrizione:</label>
       <textarea id="description" name="description" rows="4" required></textarea>
@@ -66,6 +69,7 @@
     </form>
   </div>
 </div>
+
 <script>
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -74,67 +78,63 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
-// --- Funzione per creare una card ---
-function createCard(title, description, index) {
+// --- Funzione per creare una card a tendina ---
+function createCard(title, task, description, date, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
+  card.style.cursor = "pointer";
 
-  // Contenitore interno per titolo + delete
-  const inner = document.createElement("div");
-  inner.style.display = "flex";
-  inner.style.justifyContent = "space-between";
-  inner.style.alignItems = "center";
+  // Header della card
+  const header = document.createElement("div");
+  header.style.display = "flex";
+  header.style.justifyContent = "space-between";
+  header.style.alignItems = "center";
 
   const titleSpan = document.createElement("span");
   titleSpan.textContent = title;
+  titleSpan.style.fontWeight = "bold";
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "❌";
   deleteBtn.style.background = "transparent";
   deleteBtn.style.border = "none";
   deleteBtn.style.cursor = "pointer";
-  deleteBtn.style.fontSize = "16px";
   deleteBtn.title = "Elimina homework";
+  deleteBtn.style.fontSize = "16px";
 
   deleteBtn.onclick = (e) => {
-    e.stopPropagation(); // Previene l’apertura del popup
+    e.stopPropagation();
     removeHomework(index);
     card.remove();
-    refreshIndexes(); // Aggiorna gli indici dopo la rimozione
+    refreshIndexes();
   };
 
-  inner.appendChild(titleSpan);
-  inner.appendChild(deleteBtn);
-  card.appendChild(inner);
+  header.appendChild(titleSpan);
+  header.appendChild(deleteBtn);
+  card.appendChild(header);
 
-  // Click sulla card apre popup
-  card.onclick = () => {
-    const descModal = document.createElement("div");
-    descModal.className = "modal";
-    descModal.innerHTML = `
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>${title}</h2>
-        <p>${description}</p>
-        <div style="text-align:right; margin-top:15px;">
-          <button class="close-btn">Chiudi</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(descModal);
+  // Contenuto a tendina
+  const content = document.createElement("div");
+  content.style.display = "none";
+  content.style.marginTop = "10px";
+  content.innerHTML = `
+    <p><strong>Task:</strong> ${task}</p>
+    <p>${description}</p>
+    <p><em>Creata il: ${date}</em></p>
+  `;
 
-    const closeButtons = descModal.querySelectorAll(".close, .close-btn");
-    closeButtons.forEach(btn => btn.onclick = () => descModal.remove());
-    descModal.style.display = "flex";
+  header.onclick = () => {
+    content.style.display = content.style.display === "none" ? "block" : "none";
   };
 
+  card.appendChild(content);
   container.appendChild(card);
 }
 
-// --- Funzioni LocalStorage ---
-function saveHomework(title, description) {
+// --- LocalStorage ---
+function saveHomework(title, task, description, date) {
   let homework = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  homework.push({ title, description });
+  homework.push({ title, task, description, date });
   localStorage.setItem("homeworkList", JSON.stringify(homework));
 }
 
@@ -146,10 +146,11 @@ function removeHomework(index) {
 
 function loadHomework() {
   const homework = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  homework.forEach((item, index) => createCard(item.title, item.description, index));
+  homework.forEach((item, index) => 
+    createCard(item.title, item.task, item.description, item.date, index)
+  );
 }
 
-// Aggiorna gli indici delle card dopo eliminazioni
 function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
   cards.forEach((card, i) => {
@@ -172,10 +173,12 @@ window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
 form.onsubmit = (e) => {
   e.preventDefault();
   const title = form.weekTitle.value;
+  const task = form.task.value;
   const description = form.description.value;
+  const date = new Date().toLocaleDateString();
 
-  createCard(title, description, JSON.parse(localStorage.getItem("homeworkList") || "[]").length);
-  saveHomework(title, description);
+  createCard(title, task, description, date, JSON.parse(localStorage.getItem("homeworkList") || "[]").length);
+  saveHomework(title, task, description, date);
 
   form.reset();
   modal.style.display = "none";
