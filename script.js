@@ -1,4 +1,4 @@
-// script.js funzionante
+// script.js - versione stabile, un solo file
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -12,8 +12,8 @@ openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
 window.onclick = (e) => { if(e.target === modal) modal.classList.remove("show"); };
 
-// Funzione per creare la card
-function createCard(title, task, description, date, filesArray, index) {
+// Crea card
+function createCard(title, task, description, date, fileName, fileData, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
 
@@ -27,7 +27,6 @@ function createCard(title, task, description, date, filesArray, index) {
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "❌";
   deleteBtn.className = "delete-btn";
-  deleteBtn.setAttribute("aria-label","Delete homework");
 
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
@@ -43,16 +42,13 @@ function createCard(title, task, description, date, filesArray, index) {
   const content = document.createElement("div");
   content.className = "card-content";
 
-  let fileHTML = "No file";
-  if (filesArray && filesArray.length > 0) {
-    fileHTML = filesArray.map(f => `<a href="${f.data}" download="${f.name}">${f.name}</a>`).join("<br>");
-  }
+  let fileHTML = fileData ? `<a href="${fileData}" download="${fileName}">${fileName}</a>` : "No file";
 
   content.innerHTML = `
     <div class="hw-row"><strong>Task:</strong> <span class="row-text">${task}</span></div>
     <div class="hw-row"><strong>Created:</strong> <span class="row-text">${date}</span></div>
     <div class="description-row"><strong>Description:</strong> <span class="description-text">${description}</span></div>
-    <div class="hw-row"><strong>Files:</strong><br> <span class="row-text">${fileHTML}</span></div>
+    <div class="hw-row"><strong>File:</strong> <span class="row-text">${fileHTML}</span></div>
   `;
 
   header.onclick = () => content.classList.toggle("open");
@@ -60,12 +56,12 @@ function createCard(title, task, description, date, filesArray, index) {
   container.appendChild(card);
 }
 
-// Funzioni localStorage
+// Salvataggio nel localStorage
 function saveHomework(hw) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
-  return list.length - 1; // indice corretto
+  return list.length - 1;
 }
 
 function removeHomework(index) {
@@ -74,11 +70,11 @@ function removeHomework(index) {
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Ricarica homework
+// Ricarica homework salvati
 function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item,index) => {
-    createCard(item.title, item.task, item.description, item.date, item.filesArray, index);
+    createCard(item.title, item.task, item.description, item.date, item.fileName, item.fileData, index);
   });
 }
 
@@ -96,35 +92,31 @@ function refreshIndexes() {
 }
 
 // Submit form
-form.onsubmit = async (e) => {
+form.onsubmit = (e) => {
   e.preventDefault();
 
   const title = document.getElementById("weekTitle").value;
   const task = document.getElementById("task").value;
   const description = document.getElementById("description").value;
-  const files = document.getElementById("fileInput").files;
+  const file = document.getElementById("fileInput").files[0];
   const date = new Date().toLocaleDateString();
 
-  // Legge tutti i file in maniera asincrona usando Promise
-  const filesArray = [];
-  if (files.length > 0) {
-    const filePromises = Array.from(files).map(file => new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = () => resolve({name: file.name, data: reader.result});
-      reader.readAsDataURL(file);
-    }));
-
-    const results = await Promise.all(filePromises);
-    results.forEach(f => filesArray.push(f));
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      const fileData = reader.result;
+      const index = saveHomework({title, task, description, date, fileName: file.name, fileData});
+      createCard(title, task, description, date, file.name, fileData, index);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    const index = saveHomework({title, task, description, date, fileName: null, fileData: null});
+    createCard(title, task, description, date, null, null, index);
   }
-
-  // Salva e crea card
-  const index = saveHomework({title, task, description, date, filesArray});
-  createCard(title, task, description, date, filesArray, index);
 
   form.reset();
   modal.classList.remove("show");
 };
 
-// Carica all’avvio
+// Carica al refresh
 loadHomework();
