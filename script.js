@@ -1,4 +1,4 @@
-// script.js - versione stabile, un solo file
+// script.js - versione stabile un file
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -12,7 +12,7 @@ openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
 window.onclick = (e) => { if(e.target === modal) modal.classList.remove("show"); };
 
-// Crea card
+// Crea la card
 function createCard(title, task, description, date, fileName, fileData, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
@@ -27,7 +27,6 @@ function createCard(title, task, description, date, fileName, fileData, index) {
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "❌";
   deleteBtn.className = "delete-btn";
-
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
     removeHomework(index);
@@ -56,33 +55,32 @@ function createCard(title, task, description, date, fileName, fileData, index) {
   container.appendChild(card);
 }
 
-// Salvataggio nel localStorage
+// Salva nel localStorage
 function saveHomework(hw) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
-  return list.length - 1;
+  return list.length - 1; // restituisce l'indice corretto
 }
 
 function removeHomework(index) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  list.splice(index,1);
+  list.splice(index, 1);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-// Ricarica homework salvati
 function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  list.forEach((item,index) => {
+  list.forEach((item, index) => {
     createCard(item.title, item.task, item.description, item.date, item.fileName, item.fileData, index);
   });
 }
 
 function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
-  cards.forEach((card,i) => {
+  cards.forEach((card, i) => {
     const deleteBtn = card.querySelector(".delete-btn");
-    deleteBtn.onclick = (e)=>{
+    deleteBtn.onclick = (e) => {
       e.stopPropagation();
       removeHomework(i);
       card.remove();
