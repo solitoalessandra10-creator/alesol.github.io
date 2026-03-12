@@ -20,11 +20,25 @@ body {
 /* Sidebar */
 .sidebar {
   width: 260px;
-  background-color: #fff;
+  background-color: #ffffff;
   border-right: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
   padding: 40px 25px;
+}
+
+/* Centriamo logo+menu e spingiamo footer in basso */
+.sidebar .logo,
+.sidebar .menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 12px;
+  color: #adb5bd;
 }
 
 /* Logo e profilo */
@@ -40,21 +54,19 @@ body {
   height: 140px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #0d6efd; /* bordo blu */
+  border: 3px solid #0d6efd;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(145deg, #e0e0e0, #f8f8f8);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   margin-bottom: 15px;
   transition: transform 0.3s, box-shadow 0.3s;
-  font-size: 48px;
-  color: #495057;
 }
 
 .profile-circle:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .profile-circle img {
@@ -72,43 +84,32 @@ body {
 
 /* Menu */
 .menu {
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  margin-top: 20px;
 }
 
 .menu a {
   display: block;
+  width: 100%;
   text-decoration: none;
   color: #495057;
   font-size: 16px;
   font-weight: 500;
-  padding: 12px 0;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e5e5; /* separatore */
+  transition: background 0.3s, color 0.3s;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-  transition: all 0.3s;
 }
 
 .menu a:hover {
-  background-color: #56A9FF; /* blu chiaro hover */
-  color: #fff;
-  border-left: 4px solid #0b5ed7;
-  padding-left: 11px;
+  background-color: #e9f0ff;
+  color: #0d6efd;
+  border-left: 4px solid #0d6efd;
 }
 
 .menu a.active {
-  background-color: #0d6efd; /* blu principale */
+  background-color: #0d6efd;
   color: #fff;
   border-left: 4px solid #0b5ed7;
-  padding-left: 11px;
-}
-
-/* Footer */
-.sidebar-footer {
-  margin-top: auto; /* spinge in basso */
-  font-size: 12px;
-  color: #adb5bd;
 }
 
 /* Contenuto principale */
@@ -150,7 +151,7 @@ body {
   body { background: #121212; color: #e9ecef; }
   .sidebar { background: #1e1e1e; border-right: 1px solid #333; }
   .menu a { color: #e9ecef; border-bottom: 1px solid #333; }
-  .menu a:hover { background-color: #2688FE; color: #fff; border-left: 4px solid #0d6efd; padding-left: 11px; }
-  .menu a.active { background-color: #0d6efd; color: #fff; border-left: 4px solid #0b5ed7; padding-left: 11px; }
+  .menu a:hover { background-color: #0d6efd33; color: #fff; border-left: 4px solid #0d6efd; }
+  .menu a.active { background-color: #0d6efd; color: #fff; border-left: 4px solid #0b5ed7; }
   .post { background: #1e1e1e; box-shadow: 0 1px 4px rgba(255,255,255,0.05); }
 }
