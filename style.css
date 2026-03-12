@@ -34,24 +34,28 @@ body {
 }
 
 .profile-circle {
-  width: 130px;           
+  width: 130px;
   height: 130px;
-  border-radius: 50%;     
-  overflow: hidden;       
-  border: 3px solid #0d6efd; 
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #0d6efd;   /* bordo sempre visibile */
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 15px;
+  background-color: #e9ecef;    
+  font-size: 48px;             
+  color: #495057;
   transition: transform 0.3s;
 }
-
 
 .profile-circle img {
   width: 100%;
   height: 100%;
-  object-fit: cover;      
+  object-fit: cover;
+  display: block;               
 }
+
 
 .profile-circle:hover {
   transform: scale(1.05);
