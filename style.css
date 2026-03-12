@@ -6,18 +6,16 @@ body {
   background-color: #f8f9fa; color: #212529;
 }
 
-/* Layout principale */
 .layout { display:flex; min-height:100vh; }
 
 /* Sidebar */
 .sidebar {
   width:260px; background-color:#fff; border-right:1px solid #e5e5e5;
-  display:flex; flex-direction:column; padding:40px 25px;
+  display:flex; flex-direction:column; padding:40px 25px; word-wrap: break-word;
 }
 
 .sidebar-footer { margin-top:auto; font-size:12px; color:#adb5bd; }
 
-/* Logo */
 .profile-circle {
   width:140px; height:140px; border-radius:50%; overflow:hidden;
   border:3px solid #0d6efd; display:flex; justify-content:center; align-items:center;
@@ -33,11 +31,8 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-.menu a.active {
-  background-color:#0d6efd; color:#fff; border-left:4px solid #0b5ed7;
-}
+.menu a.active { background-color:#0d6efd; color:#fff; border-left:4px solid #0b5ed7; }
 
-/* Contenuto principale */
 .content { flex:1; max-width:900px; margin:auto; padding:60px 30px; }
 
 .post {
@@ -45,7 +40,6 @@ body {
   box-shadow:0 1px 4px rgba(0,0,0,0.08); margin-bottom:40px;
 }
 
-/* Button */
 .add-btn {
   background-color:#0d6efd; color:#fff; border:none; padding:10px 16px;
   border-radius:5px; font-size:16px; cursor:pointer; margin-bottom:20px;
@@ -54,8 +48,7 @@ body {
 .add-btn:hover { background-color:#56a9ff; }
 
 /* Modal */
-.modal {
-  display:flex; justify-content:center; align-items:center;
+.modal { display:flex; justify-content:center; align-items:center;
   opacity:0; visibility:hidden; position:fixed; z-index:1000;
   left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -71,9 +64,7 @@ body {
 .modal-content h2 { margin-bottom:20px; text-align:center; }
 
 .modal-content input,
-.modal-content textarea {
-  width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc;
-}
+.modal-content textarea { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
 
 /* Homework cards */
 .homework-container { display:flex; flex-direction:column; gap:15px; }
@@ -85,7 +76,6 @@ body {
 
 .homework-card:hover { transform:translateY(-2px); }
 
-/* Header card */
 .card-header {
   display:flex; justify-content:space-between; align-items:center;
   padding:14px 18px; cursor:pointer; font-weight:600;
@@ -94,26 +84,30 @@ body {
 .card-title { flex:1; text-align:left; }
 .delete-btn { border:none; background:transparent; cursor:pointer; font-size:16px; }
 
-/* Contenuto card */
-.card-content {
-  max-height:0; overflow:hidden; padding:0 18px;
-  transition:max-height 0.3s ease, padding 0.3s ease; text-align:left;
-}
+/* Card content */
+.card-content { max-height:0; overflow:hidden; padding:0 18px; transition:max-height 0.3s ease, padding 0.3s ease; }
 
 .card-content.open { max-height:500px; padding:10px 18px; }
 
 .hw-row {
-  display:flex; flex-direction:column; margin-bottom:10px; text-align:left; font-size:14px;
+  display:flex; flex-direction: row; align-items:flex-start;
+  margin-bottom:10px; font-size:14px; text-align:left;
 }
 
-.hw-row strong { display:block; margin-bottom:3px; }
-.row-text, .description-text { font-weight:400; color:#495057; white-space:pre-wrap; padding-left:0; }
+.hw-row strong { margin-right:5px; flex-shrink:0; }
+
+.description-row {
+  display:flex; flex-direction:column;
+}
+
+.row-text, .description-text {
+  font-weight:400; color:#495057; white-space: pre-wrap;
+}
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body { background:#121212; color:#e9ecef; }
   .sidebar, .post, .homework-card, .modal-content { background:#1e1e1e; border:1px solid #333; color:#e9ecef; }
-  .hw-row { border-bottom:1px solid #333; }
   .menu a { color:#e9ecef; border-bottom:1px solid #333; }
   .menu a:hover { background-color:#0d6efd33; color:#fff; }
 }
