@@ -208,15 +208,15 @@ body {
 .homework-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .homework-card {
   background: #fff;
   border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: transform 0.2s;
 }
 
@@ -224,13 +224,18 @@ body {
   transform: translateY(-2px);
 }
 
+/* Card header */
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
+  padding: 16px 20px;
   cursor: pointer;
   font-weight: 600;
+  background: #f0f4ff;
+  border-bottom: 1px solid #dce4f0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .card-title {
@@ -249,32 +254,34 @@ body {
 .card-content {
   max-height: 0;
   overflow: hidden;
-  padding: 0 18px;
+  padding: 0 20px;
   transition: max-height 0.3s ease, padding 0.3s ease;
 }
 
 .card-content.open {
-  max-height: 500px;
-  padding: 10px 18px;
+  max-height: 1000px;
+  padding: 15px 20px;
 }
 
-.hw-row {
+/* Rows */
+.hw-row, .description-row {
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
-  margin-bottom: 10px;
-  font-size: 14px;
+  padding: 10px 0;
   text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.hw-row:last-child,
+.description-row:last-child {
+  border-bottom: none;
 }
 
 .hw-row strong {
-  margin-right: 5px;
+  margin-right: 8px;
   flex-shrink: 0;
-}
-
-.description-row {
-  display: flex;
-  flex-direction: column;
+  width: 80px;
 }
 
 .row-text,
@@ -282,6 +289,23 @@ body {
   font-weight: 400;
   color: #495057;
   white-space: pre-wrap;
+  flex: 1;
+}
+
+.description-row {
+  flex-direction: column;
+}
+
+.description-row strong {
+  margin-bottom: 5px;
+}
+
+/* Hover su righe */
+.hw-row:hover,
+.description-row:hover {
+  background-color: #f8faff;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 
 /* Dark mode */
