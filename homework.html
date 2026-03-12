@@ -142,12 +142,24 @@ fileHTML=`<p><a href="${fileData}" download="${fileName}">Download ${fileName}</
 }
 
 content.innerHTML=`
-<p><strong>Task:</strong> ${task}</p>
-<p>${description}</p>
-<p><em>Creata il: ${date}</em></p>
-${fileHTML}
-`;
 
+<div class="hw-row">
+<strong>Task:</strong> ${task}
+</div>
+
+<div class="hw-row">
+<strong>Descrizione:</strong> ${description}
+</div>
+
+<div class="hw-row">
+<strong>Creato:</strong> ${date}
+</div>
+
+<div class="hw-row">
+${fileHTML}
+</div>
+
+`;
 header.onclick=()=>{
 content.style.display=
 content.style.display==="none"?"block":"none";
