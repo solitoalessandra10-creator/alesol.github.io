@@ -204,6 +204,34 @@ body {
   border: 1px solid #ccc;
 }
 
+/* Bottoni popup */
+.modal-buttons .modal-btn {
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s;
+}
+
+.modal-buttons .cancel-btn {
+  background-color: #adb5bd;
+  color: #fff;
+}
+
+.modal-buttons .cancel-btn:hover {
+  background-color: #868e96;
+}
+
+.modal-buttons .save-btn {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.modal-buttons .save-btn:hover {
+  background-color: #56a9ff;
+}
+
 /* Homework cards */
 .homework-container {
   display: flex;
