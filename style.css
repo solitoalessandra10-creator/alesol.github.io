@@ -247,6 +247,10 @@ body {
   margin-top: 20px;
 }
 
+.homework-card span {
+  font-weight: bold;
+}
+
 .homework-card {
   background: #fff;
   padding: 15px 20px;
