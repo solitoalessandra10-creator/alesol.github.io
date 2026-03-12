@@ -112,7 +112,7 @@ form.onsubmit = (e) => {
 
   if(file){
     const reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function(){
       const hw = {title,task,description,date,fileName:file.name,fileData:reader.result};
       createCard(title,task,description,date,file.name,reader.result,
         JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
