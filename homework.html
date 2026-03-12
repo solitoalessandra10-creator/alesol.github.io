@@ -66,7 +66,6 @@
     </form>
   </div>
 </div>
-
 <script>
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -75,27 +74,40 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
-// Apri modal
-openBtn.onclick = () => { modal.style.display = "flex"; }
-
-// Chiudi modal
-closeBtn.onclick = cancelBtn.onclick = () => { modal.style.display = "none"; }
-
-// Chiudi cliccando fuori
-window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
-
-// Submit form
-form.onsubmit = (e) => {
-  e.preventDefault();
-  const title = form.weekTitle.value;
-  const description = form.description.value;
-
-  // Crea card
+// --- Funzione per creare una card ---
+function createCard(title, description, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
-  card.textContent = title;
 
-  // Click sulla card apre un popup interno
+  // Contenitore interno per titolo + delete
+  const inner = document.createElement("div");
+  inner.style.display = "flex";
+  inner.style.justifyContent = "space-between";
+  inner.style.alignItems = "center";
+
+  const titleSpan = document.createElement("span");
+  titleSpan.textContent = title;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "❌";
+  deleteBtn.style.background = "transparent";
+  deleteBtn.style.border = "none";
+  deleteBtn.style.cursor = "pointer";
+  deleteBtn.style.fontSize = "16px";
+  deleteBtn.title = "Elimina homework";
+
+  deleteBtn.onclick = (e) => {
+    e.stopPropagation(); // Previene l’apertura del popup
+    removeHomework(index);
+    card.remove();
+    refreshIndexes(); // Aggiorna gli indici dopo la rimozione
+  };
+
+  inner.appendChild(titleSpan);
+  inner.appendChild(deleteBtn);
+  card.appendChild(inner);
+
+  // Click sulla card apre popup
   card.onclick = () => {
     const descModal = document.createElement("div");
     descModal.className = "modal";
@@ -113,14 +125,64 @@ form.onsubmit = (e) => {
 
     const closeButtons = descModal.querySelectorAll(".close, .close-btn");
     closeButtons.forEach(btn => btn.onclick = () => descModal.remove());
-
     descModal.style.display = "flex";
-  }
+  };
 
   container.appendChild(card);
+}
+
+// --- Funzioni LocalStorage ---
+function saveHomework(title, description) {
+  let homework = JSON.parse(localStorage.getItem("homeworkList")) || [];
+  homework.push({ title, description });
+  localStorage.setItem("homeworkList", JSON.stringify(homework));
+}
+
+function removeHomework(index) {
+  let homework = JSON.parse(localStorage.getItem("homeworkList")) || [];
+  homework.splice(index, 1);
+  localStorage.setItem("homeworkList", JSON.stringify(homework));
+}
+
+function loadHomework() {
+  const homework = JSON.parse(localStorage.getItem("homeworkList")) || [];
+  homework.forEach((item, index) => createCard(item.title, item.description, index));
+}
+
+// Aggiorna gli indici delle card dopo eliminazioni
+function refreshIndexes() {
+  const cards = container.querySelectorAll(".homework-card");
+  cards.forEach((card, i) => {
+    const deleteBtn = card.querySelector("button");
+    deleteBtn.onclick = (e) => {
+      e.stopPropagation();
+      removeHomework(i);
+      card.remove();
+      refreshIndexes();
+    };
+  });
+}
+
+// --- Eventi modal ---
+openBtn.onclick = () => { modal.style.display = "flex"; }
+closeBtn.onclick = cancelBtn.onclick = () => { modal.style.display = "none"; }
+window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
+
+// --- Submit form ---
+form.onsubmit = (e) => {
+  e.preventDefault();
+  const title = form.weekTitle.value;
+  const description = form.description.value;
+
+  createCard(title, description, JSON.parse(localStorage.getItem("homeworkList") || "[]").length);
+  saveHomework(title, description);
+
   form.reset();
   modal.style.display = "none";
 };
+
+// --- Carica le card salvate all’avvio ---
+loadHomework();
 </script>
 
 </body>
