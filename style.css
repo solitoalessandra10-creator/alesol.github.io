@@ -208,15 +208,15 @@ body {
 .homework-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 20px; /* spazio tra le card */
 }
 
 .homework-card {
   background: #fff;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #d0d0d0;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
   transition: transform 0.2s;
 }
 
@@ -230,12 +230,10 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  cursor: pointer;
   font-weight: 600;
   background: #f0f4ff;
-  border-bottom: 1px solid #dce4f0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-bottom: 2px solid #c0cde0;
+  cursor: pointer;
 }
 
 .card-title {
@@ -254,8 +252,8 @@ body {
 .card-content {
   max-height: 0;
   overflow: hidden;
-  padding: 0 20px;
   transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 20px;
 }
 
 .card-content.open {
@@ -263,14 +261,14 @@ body {
   padding: 15px 20px;
 }
 
-/* Rows */
+/* Righe interne */
 .hw-row, .description-row {
   display: flex;
   align-items: flex-start;
-  padding: 10px 0;
+  padding: 15px 0; /* padding verticale maggiore */
   text-align: left;
   font-size: 14px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0; /* linea visibile */
 }
 
 .hw-row:last-child,
@@ -279,31 +277,32 @@ body {
 }
 
 .hw-row strong {
-  margin-right: 8px;
+  margin-right: 10px;
   flex-shrink: 0;
-  width: 80px;
+  width: 100px; /* larghezza fissa per allineare il testo */
 }
 
 .row-text,
 .description-text {
+  flex: 1;
   font-weight: 400;
   color: #495057;
   white-space: pre-wrap;
-  flex: 1;
 }
 
+/* Descrizione sotto */
 .description-row {
   flex-direction: column;
 }
 
 .description-row strong {
-  margin-bottom: 5px;
+  margin-bottom: 8px; /* spazio tra label e contenuto */
 }
 
-/* Hover su righe */
+/* Hover leggero sulle righe */
 .hw-row:hover,
 .description-row:hover {
-  background-color: #f8faff;
+  background-color: #f5f8ff;
   border-radius: 4px;
   transition: background 0.2s;
 }
