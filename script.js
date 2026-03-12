@@ -1,4 +1,4 @@
-// JS Homework completo
+// script.js - Gestione Homework
 
 const modal = document.getElementById("homeworkModal");
 const openBtn = document.getElementById("openModal");
@@ -7,13 +7,13 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
-// Open/close modal
+// Apri/chiudi modal
 openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
-window.onclick = (e) => { if(e.target == modal) modal.classList.remove("show"); };
+window.onclick = (e) => { if(e.target === modal) modal.classList.remove("show"); };
 
-// Create homework card
-function createCard(title, task, description, date, fileName, fileData, index){
+// Funzione per creare la card con più file
+function createCard(title, task, description, date, filesArray, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
 
@@ -43,11 +43,17 @@ function createCard(title, task, description, date, fileName, fileData, index){
   const content = document.createElement("div");
   content.className = "card-content";
 
+  // Prepariamo la lista dei file
+  let fileHTML = "No file";
+  if (filesArray && filesArray.length > 0) {
+    fileHTML = filesArray.map(f => `<a href="${f.data}" download="${f.name}">${f.name}</a>`).join("<br>");
+  }
+
   content.innerHTML = `
     <div class="hw-row"><strong>Task:</strong> <span class="row-text">${task}</span></div>
     <div class="hw-row"><strong>Created:</strong> <span class="row-text">${date}</span></div>
     <div class="description-row"><strong>Description:</strong> <span class="description-text">${description}</span></div>
-    <div class="hw-row"><strong>File:</strong> <span class="row-text">${fileData ? `<a href="${fileData}" download="${fileName}">${fileName}</a>` : "No file"}</span></div>
+    <div class="hw-row"><strong>File:</strong> <span class="row-text">${fileHTML}</span></div>
   `;
 
   header.onclick = () => content.classList.toggle("open");
@@ -56,27 +62,29 @@ function createCard(title, task, description, date, fileName, fileData, index){
   container.appendChild(card);
 }
 
-// LocalStorage
-function saveHomework(hw){
+// Salvataggio nel localStorage
+function saveHomework(hw) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function removeHomework(index){
+function removeHomework(index) {
   let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.splice(index,1);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function loadHomework(){
+// Ricarica le card dal localStorage
+function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.forEach((item,index) => {
-    createCard(item.title,item.task,item.description,item.date,item.fileName,item.fileData,index);
+    createCard(item.title, item.task, item.description, item.date, item.filesArray, index);
   });
 }
 
-function refreshIndexes(){
+// Aggiorna gli indici dopo cancellazione
+function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
   cards.forEach((card,i) => {
     const deleteBtn = card.querySelector(".delete-btn");
@@ -89,34 +97,46 @@ function refreshIndexes(){
   });
 }
 
-// Form submit
+// Submit form
 form.onsubmit = (e) => {
   e.preventDefault();
   const title = document.getElementById("weekTitle").value;
   const task = document.getElementById("task").value;
   const description = document.getElementById("description").value;
-  const file = document.getElementById("fileInput").files[0];
+  const files = document.getElementById("fileInput").files;
   const date = new Date().toLocaleDateString();
 
-  if(file){
-    const reader = new FileReader();
-    reader.onload = function(){
-      const hw = {title,task,description,date,fileName:file.name,fileData:reader.result};
-      createCard(title,task,description,date,file.name,reader.result,
-        JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-      saveHomework(hw);
-    };
-    reader.readAsDataURL(file);
+  if (files.length > 0) {
+    const filesArray = [];
+    let loadedFiles = 0;
+
+    for (let i=0; i<files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = function(event){
+        filesArray.push({name: file.name, data: event.target.result});
+        loadedFiles++;
+        if (loadedFiles === files.length) {
+          // Tutti i file caricati, crea card e salva
+          createCard(title, task, description, date, filesArray,
+            JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
+          saveHomework({title, task, description, date, filesArray});
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
   } else {
-    const hw = {title,task,description,date,fileName:null,fileData:null};
-    createCard(title,task,description,date,null,null,
+    // Nessun file selezionato
+    createCard(title, task, description, date, [], 
       JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
-    saveHomework(hw);
+    saveHomework({title, task, description, date, filesArray: []});
   }
 
   form.reset();
   modal.classList.remove("show");
 };
 
-// Load saved homework
+// Carica homework salvati all'avvio
 loadHomework();
