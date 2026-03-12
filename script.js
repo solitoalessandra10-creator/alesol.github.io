@@ -5,13 +5,13 @@ const cancelBtn = document.getElementById("cancelBtn");
 const form = document.getElementById("homeworkForm");
 const container = document.getElementById("homeworkContainer");
 
-// Open/close modal
+// Open/close modal with smooth transition
 openBtn.onclick = () => modal.classList.add("show");
 closeBtn.onclick = cancelBtn.onclick = () => modal.classList.remove("show");
-window.onclick = (e) => { if(e.target == modal) modal.classList.remove("show"); };
+window.onclick = (e) => { if (e.target === modal) modal.classList.remove("show"); };
 
-// Create homework card
-function createCard(title, task, description, date, fileName, fileData, index){
+// Create a homework card
+function createCard(title, task, description, date, fileName, fileData, index) {
   const card = document.createElement("div");
   card.className = "homework-card";
 
@@ -25,7 +25,7 @@ function createCard(title, task, description, date, fileName, fileData, index){
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "❌";
   deleteBtn.className = "delete-btn";
-  deleteBtn.setAttribute("aria-label","Delete homework");
+  deleteBtn.setAttribute("aria-label", "Delete homework");
 
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
@@ -42,7 +42,7 @@ function createCard(title, task, description, date, fileName, fileData, index){
   content.className = "card-content";
 
   let fileHTML = "No file";
-  if(fileData) fileHTML = `<a href="${fileData}" download="${fileName}">${fileName}</a>`;
+  if (fileData) fileHTML = `<a href="${fileData}" download="${fileName}">${fileName}</a>`;
 
   content.innerHTML = `
     <div class="hw-row"><span class="label">Task</span><span>${task}</span></div>
@@ -51,37 +51,41 @@ function createCard(title, task, description, date, fileName, fileData, index){
     <div class="hw-row"><span class="label">File</span><span>${fileHTML}</span></div>
   `;
 
+  // Toggle content open/close with smooth max-height animation
   header.onclick = () => content.classList.toggle("open");
 
   card.appendChild(content);
   container.appendChild(card);
 }
 
-// LocalStorage functions
-function saveHomework(hw){
-  let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
+// Save homework to localStorage
+function saveHomework(hw) {
+  const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
   list.push(hw);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function removeHomework(index){
-  let list = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  list.splice(index,1);
+// Remove homework from localStorage
+function removeHomework(index) {
+  const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
+  list.splice(index, 1);
   localStorage.setItem("homeworkList", JSON.stringify(list));
 }
 
-function loadHomework(){
+// Load all homework from localStorage
+function loadHomework() {
   const list = JSON.parse(localStorage.getItem("homeworkList")) || [];
-  list.forEach((item,index) => {
-    createCard(item.title,item.task,item.description,item.date,item.fileName,item.fileData,index);
+  list.forEach((item, index) => {
+    createCard(item.title, item.task, item.description, item.date, item.fileName, item.fileData, index);
   });
 }
 
-function refreshIndexes(){
+// Refresh delete buttons indices
+function refreshIndexes() {
   const cards = container.querySelectorAll(".homework-card");
-  cards.forEach((card,i) => {
+  cards.forEach((card, i) => {
     const deleteBtn = card.querySelector(".delete-btn");
-    deleteBtn.onclick = (e)=>{
+    deleteBtn.onclick = (e) => {
       e.stopPropagation();
       removeHomework(i);
       card.remove();
@@ -90,7 +94,7 @@ function refreshIndexes(){
   });
 }
 
-// Form submit
+// Handle form submit
 form.onsubmit = (e) => {
   e.preventDefault();
   const title = document.getElementById("weekTitle").value;
@@ -99,19 +103,19 @@ form.onsubmit = (e) => {
   const file = document.getElementById("fileInput").files[0];
   const date = new Date().toLocaleDateString();
 
-  if(file){
+  if (file) {
     const reader = new FileReader();
-    reader.onload = function(){
-      const hw = {title,task,description,date,fileName:file.name,fileData:reader.result};
-      createCard(title,task,description,date,file.name,reader.result,
-        JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
+    reader.onload = function() {
+      const hw = { title, task, description, date, fileName: file.name, fileData: reader.result };
+      createCard(title, task, description, date, file.name, reader.result,
+        JSON.parse(localStorage.getItem("homeworkList") || "[]").length);
       saveHomework(hw);
     };
     reader.readAsDataURL(file);
   } else {
-    const hw = {title,task,description,date,fileName:null,fileData:null};
-    createCard(title,task,description,date,null,null,
-      JSON.parse(localStorage.getItem("homeworkList")||"[]").length);
+    const hw = { title, task, description, date, fileName: null, fileData: null };
+    createCard(title, task, description, date, null, null,
+      JSON.parse(localStorage.getItem("homeworkList") || "[]").length);
     saveHomework(hw);
   }
 
@@ -119,5 +123,5 @@ form.onsubmit = (e) => {
   modal.classList.remove("show");
 };
 
-// Load saved homework on start
+// Load homework on page load
 loadHomework();
